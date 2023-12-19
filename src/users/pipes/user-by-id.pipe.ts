@@ -9,8 +9,9 @@ export class UserByIdPipe implements PipeTransform<number, Promise<User>> {
     @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
   async transform(value: number): Promise<User> {
-    const user: User | null = await this.usersRepository.findOneBy({
-      id: value,
+    const user: User | null = await this.usersRepository.findOne({
+      where: { id: value },
+      relations: { settings: true },
     });
 
     if (!user) {
