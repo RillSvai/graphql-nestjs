@@ -12,10 +12,32 @@ type User {
   id: Int!
   username: String!
   displayName: String
-  settings: UserSettings
+  settings: UserSettings!
 }
 
 type Query {
   find: [User!]!
   findOneById(id: Int!): User!
+}
+
+type Mutation {
+  create(createUserInput: CreateUserInput!): User!
+  update(id: Int!, updateUserInput: UpdateUserInput!): User!
+  remove(id: Int!): User!
+}
+
+input CreateUserInput {
+  username: String!
+  displayName: String
+}
+
+input UpdateUserInput {
+  username: String
+  displayName: String
+  settings: UpdateUserSettingsInput
+}
+
+input UpdateUserSettingsInput {
+  receiveNotification: Boolean! = false
+  receiveEmails: Boolean! = false
 }

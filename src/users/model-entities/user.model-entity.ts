@@ -7,15 +7,17 @@ import { UserSettings } from './user-settings.model-entity';
 @ObjectType()
 export class User extends BaseModelEntity<User> {
   @Field()
-  @Column()
+  @Column({ unique: true })
   username: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true, name: 'display_name' })
   displayName?: string;
 
-  @Field({ nullable: true })
-  @OneToOne(() => UserSettings, { nullable: true, cascade: true })
+  @Field(() => UserSettings)
+  @OneToOne(() => UserSettings, {
+    cascade: ['insert', 'update'],
+  })
   @JoinColumn({ name: 'user_settings_id' })
-  settings?: UserSettings;
+  settings: UserSettings;
 }
