@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLFormattedError } from 'graphql';
+import { AlsModule } from './als/als.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,6 +27,7 @@ import { GraphQLFormattedError } from 'graphql';
         return customError;
       },
     }),
+    AlsModule,
   ],
 })
 export class AppModule {}

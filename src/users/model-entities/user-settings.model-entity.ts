@@ -1,7 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModelEntity } from 'src/database/base.model-entity';
-import { Column, Entity, OneToOne } from 'typeorm';
-import { User } from './user.model-entity';
+import { Column, Entity } from 'typeorm';
 @ObjectType()
 @Entity({ name: 'user_settings' })
 export class UserSettings extends BaseModelEntity<UserSettings> {

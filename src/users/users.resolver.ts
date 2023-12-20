@@ -6,13 +6,18 @@ import { UserByIdPipe } from './pipes/user-by-id.pipe';
 import { CreateUserInput } from './dto/create-user.input';
 import { UsernameExistPipe } from './pipes/username-exist.pipe';
 import { UpdateUserInput } from './dto/update-user.input';
+import { AsyncLocalStorage } from 'async_hooks';
 
 @Resolver()
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly als: AsyncLocalStorage<any>,
+  ) {}
 
   @Query(() => [User])
   async find(): Promise<User[]> {
+    console.log(this.als.getStore());
     return await this.usersService.find();
   }
 
