@@ -41,3 +41,7 @@ input UpdateUserSettingsInput {
   receiveNotification: Boolean! = false
   receiveEmails: Boolean! = false
 }
+
+type Subscription {
+  userFinded: String!
+}

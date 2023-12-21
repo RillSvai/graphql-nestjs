@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
@@ -6,6 +6,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLFormattedError } from 'graphql';
 import { AlsModule } from './als/als.module';
+import { AlsMiddleware } from './als/als.middleware';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,9 @@ import { AlsModule } from './als/als.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
+      subscriptions: {
+        'graphql-ws': true,
+      },
       formatError: (error) => {
         const customError: GraphQLFormattedError = {
           message: error.message,
@@ -30,4 +34,8 @@ import { AlsModule } from './als/als.module';
     AlsModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AlsMiddleware).forRoutes('graphql');
+  }
+}
